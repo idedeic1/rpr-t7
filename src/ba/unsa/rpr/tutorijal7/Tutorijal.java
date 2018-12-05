@@ -25,6 +25,10 @@ public class Tutorijal {
             Grad grad = new Grad();
             double[] temp = new double[1000];
             String[] nazivGrada = tmp.get(i).split(",");
+            if(nazivGrada.length >= 1000){
+                System.out.println("Prekoracen limit niza temperature!");
+                return null;
+            }
             grad.setNaziv(nazivGrada[0]);
             for (int j = 1; j < nazivGrada.length; j++) {
                 try {
@@ -37,10 +41,10 @@ public class Tutorijal {
             grad.setTemperature(temp);
             gradovi.add(grad);
         }
-
+        input.close();
         return gradovi;
     }
-    
+
     public static void main(String[] args) {
 
     }

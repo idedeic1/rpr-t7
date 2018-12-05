@@ -44,7 +44,14 @@ public class Tutorijal {
         input.close();
         return gradovi;
     }
+    static UN ucitajXml(ArrayList<Grad> gradovi){
+        UN drzave = new UN ();
 
+
+    }
+    static void zapisiXml(UN drzave){
+
+    }
     public static void main(String[] args) {
 
     }

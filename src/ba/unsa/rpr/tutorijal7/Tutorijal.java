@@ -9,21 +9,19 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.beans.XMLDecoder;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.beans.XMLEncoder;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Tutorijal {
 
-    static ArrayList<Grad> ucitajGradove(String naziv){
+    static ArrayList<Grad> ucitajGradove(){
         Scanner input;
         try {
-            input = new Scanner(new FileReader(naziv));
+            input = new Scanner(new FileReader("mjerenja.txt"));
         }catch(FileNotFoundException ex){
-            System.out.println("Greska" + ex);
+            System.out.println("Greska: " + ex);
             return null;
         }
         ArrayList<String> tmp = new ArrayList<String>();
@@ -95,10 +93,27 @@ public class Tutorijal {
 
     }
     static void zapisiXml(UN drzave){
-
+        try {
+            XMLEncoder e = new XMLEncoder(
+                    new BufferedOutputStream(
+                            new FileOutputStream("un.xml")));
+            e.writeObject(drzave);
+            e.close();
+        } catch(Exception e) {
+            System.out.println("Greška: " + e);
+        }
     }
-    public static void main(String[] args) {
 
+    public static void main(String[] args) {
+        ArrayList<Grad> gradovi = ucitajGradove();
+
+        for(Grad g : gradovi) {
+            System.out.print("Naziv grada: " + g.getNaziv() + ", Broj stanovnika: " + g.getBrojStanovnika() + ", Temperature: ");
+            for(double x: g.getTemperature()){
+                if(x!=0) System.out.print(x + " ");
+            }
+            System.out.print("\n");
+        }
     }
 
 }

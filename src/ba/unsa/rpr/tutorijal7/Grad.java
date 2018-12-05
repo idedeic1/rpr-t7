@@ -9,7 +9,7 @@ public class Grad {
     public Grad() {
         this.naziv = "";
         this.brojStanovnika = 0;
-        this.temperature = new double[1000];
+        this.temperature = null;
     }
 
     public String getNaziv() {

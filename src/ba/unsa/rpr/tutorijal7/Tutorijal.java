@@ -1,6 +1,15 @@
 package ba.unsa.rpr.tutorijal7;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.beans.XMLDecoder;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -23,11 +32,11 @@ public class Tutorijal {
             tmp.add(input.nextLine());
         }
         ArrayList<Grad> gradovi = new ArrayList<Grad>();
-        for(int i=0; i<tmp.size(); i++){
+        for (String aTmp : tmp) {
             Grad grad = new Grad();
             double[] temp = new double[1000];
-            String[] nazivGrada = tmp.get(i).split(",");
-            if(nazivGrada.length >= 1000){
+            String[] nazivGrada = aTmp.split(",");
+            if (nazivGrada.length >= 1000) {
                 System.out.println("Prekoracen limit niza temperature!");
                 return null;
             }
@@ -35,7 +44,7 @@ public class Tutorijal {
             for (int j = 1; j < nazivGrada.length; j++) {
                 try {
                     temp[j - 1] = Double.valueOf(nazivGrada[j]);
-                } catch (ArrayIndexOutOfBoundsException e){
+                } catch (ArrayIndexOutOfBoundsException e) {
                     return null;
                 }
             }
@@ -49,13 +58,39 @@ public class Tutorijal {
     static UN ucitajXml(ArrayList<Grad> gradovi){
 
         UN drzave = new UN ();
+        ArrayList<Drzava> listaDrzava = new ArrayList<Drzava>();
+
+        Document dokument = null;
         try {
-            XMLDecoder ulaz = new XMLDecoder(new FileInputStream("drzave.xml"));
-            drzave = (UN) ulaz.readObject();
-            ulaz.close();
-        } catch(Exception e) {
-            System.out.println("Greška: "+e);
+            DocumentBuilder docReader = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            dokument = docReader.parse(new File("drzave.xml"));
+        } catch (Exception e) {
+            System.out.println("drzave.xml nije validan XML dokument");
         }
+
+        NodeList drzaveUXmlu = dokument.getChildNodes();
+        for(int i=0; i<drzaveUXmlu.getLength(); i++){
+            Node temp = drzaveUXmlu.item(i);
+            if(temp instanceof Element){
+
+                String stanovnici = ((Element) temp).getAttribute("stanovnika");
+                String nazivDrzave = ((Element) temp).getAttribute("naziv");
+                String povrs = ((Element) temp).getAttribute("povrsina");
+                String jedZaPovrs = ((Element) temp).getAttribute("jedinicaZaPovrsinu");
+
+                Grad glavni = new Grad();
+                Drzava dr = new Drzava();
+
+                dr.setBrojStanovnika(Integer.parseInt(stanovnici));
+                dr.setNaziv(nazivDrzave);
+                dr.setGlavniGrad(glavni);
+                dr.setJedinicaZaPovrsinu(jedZaPovrs);
+                dr.setPovrsina(Double.parseDouble(povrs));
+
+                listaDrzava.add(dr);
+            }
+        }
+        drzave.setDrzave(listaDrzava);
         return drzave;
 
     }

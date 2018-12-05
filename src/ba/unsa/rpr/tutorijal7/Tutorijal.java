@@ -1,5 +1,7 @@
 package ba.unsa.rpr.tutorijal7;
 
+import java.beans.XMLDecoder;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -45,8 +47,16 @@ public class Tutorijal {
         return gradovi;
     }
     static UN ucitajXml(ArrayList<Grad> gradovi){
-        UN drzave = new UN ();
 
+        UN drzave = new UN ();
+        try {
+            XMLDecoder ulaz = new XMLDecoder(new FileInputStream("drzave.xml"));
+            drzave = (UN) ulaz.readObject();
+            ulaz.close();
+        } catch(Exception e) {
+            System.out.println("Greška: "+e);
+        }
+        return drzave;
 
     }
     static void zapisiXml(UN drzave){

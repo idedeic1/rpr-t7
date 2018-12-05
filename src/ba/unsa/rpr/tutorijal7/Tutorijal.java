@@ -73,7 +73,7 @@ public class Tutorijal {
 
                 String stanovnici = ((Element) temp).getAttribute("stanovnika");
                 String nazivDrzave = ((Element) temp).getAttribute("naziv");
-                String povrs = ((Element) temp).getAttribute("povrsina");
+                //String povrs = ((Element) temp).getAttribute("povrsina");
                 String jedZaPovrs = ((Element) temp).getAttribute("jedinicaZaPovrsinu");
 
                 Grad glavni = new Grad();
@@ -83,7 +83,7 @@ public class Tutorijal {
                 dr.setNaziv(nazivDrzave);
                 dr.setGlavniGrad(glavni);
                 dr.setJedinicaZaPovrsinu(jedZaPovrs);
-                dr.setPovrsina(Double.parseDouble(povrs));
+                //dr.setPovrsina(Double.parseDouble(povrs));
 
                 listaDrzava.add(dr);
             }
@@ -114,6 +114,12 @@ public class Tutorijal {
             }
             System.out.print("\n");
         }
+//        UN drzave = new UN();
+//        drzave = ucitajXml(gradovi);
+//        for(Drzava d : drzave.getDrzave()) {
+//            System.out.print("Naziv drzave: " + d.getNaziv() + ", Broj stanovnika: " + d.getBrojStanovnika() + " Glavni grad: " + d.getGlavniGrad());
+//            System.out.print("\n");
+//        }
     }
 
 }
